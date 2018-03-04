@@ -1,0 +1,63 @@
+//Referred from https://ourcodeworld.com/articles/read/353/how-to-convert-numbers-to-words-number-spelling-in-javascript
+
+<script>
+ function numberToEnglish(stringNumber) {
+    var units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+
+    var tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+    var scales = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quatttuor-decillion', 'quindecillion', 'sexdecillion', 'septen-decillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'centillion'];
+
+    if (isNaN(parseInt(stringNumber))) {
+        throw "Please pass in correct format";
+    } else if (parseInt(stringNumber) == 0) {
+        return "zero";
+    }
+
+    var chunks = [];
+    var end = stringNumber.length;
+    var start = end;
+
+    while(start > 0) {
+        start = (end - 3 < 0) ? 0 : (end - 3);
+        chunks.push(stringNumber.slice(start, end));
+        end = end - 3;
+    }
+
+    var words = [];
+
+    for (var i = 0; i < chunks.length; i++) {
+        if (parseInt(chunks[i])) {
+            var chunk = chunks[i].split("").reverse();
+
+            if (word = scales[i]) {
+                words.push(word);
+            }
+
+            if (chunk[1] == 1) {
+                chunk[0] = 10 * parseInt(chunk[0]);
+            }
+
+            if (word = units[chunk[0]]) {
+                words.push(word);
+            }
+
+            if (word = tens[chunk[1]]) {
+                words.push(word);
+            }
+
+            if ((parseInt(chunk[2]) || !i) && (parseInt(chunk[0]) || parseInt(chunk[1]))) {
+                words.push("and");
+            }
+
+            if (parseInt(chunk[2])) {
+                word = units[chunk[2]];
+                words.push(word + " hundred");
+            }
+        }
+    }
+    return words.reverse().join(" ");
+}
+
+
+</script>
